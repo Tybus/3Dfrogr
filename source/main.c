@@ -190,6 +190,9 @@ void draw_frog(int x, int y){
 void draw_car(int posx , int y){
     draw_fillsquare(15*posx,y,15*posx +15, y+15,0,0,255);
 }
+void draw_logs(int posx , int y){
+    draw_fillsquare(posx*15,y,15*posx +45,y+15,66,49,0);
+    }
 int main()
 {
 	initSrv();
@@ -214,6 +217,7 @@ int main()
     int frogx = 0;
     int frogy = 0;
     int carx[6][9];
+    int logx[5][6];
 
     // Cant use rand.
     //for(d=1;d<6;d++){
@@ -224,15 +228,26 @@ int main()
 
      for(d=0;d<8;d++){
         carx[0][d]=26;
-        d++;
+        if(d<5){
+            logx[0][d]=26;
         }
+        d++;
+    }
     for(d=1;d<8;d++){
+        if(d<5){
+            logx[0][d]=0;
+        }
         carx[0][d]=0;
         d++;
-        }
+    }
     for(q=0;q<8;q++){
 
         for(d=1; d<6; d++){
+            if(q<5){
+                if(d<5){
+                    logx[d][q]=26+p+6;
+                }
+            }
             carx[d][q]=26+p +6;
             p=p+6;
         }
@@ -242,7 +257,12 @@ int main()
     p= 0;
     for(q=1;q<8;q++){
 
-        for(d=1;d<6;d++){
+        for(d=1;d<5;d++){
+            if(q<5){
+                if(d<5){
+                    logx[d][q] = p-6;
+                }
+            }
             carx[d][q]=p-6;
             p=p-6;
         }
@@ -267,14 +287,17 @@ int main()
 
 		u32 regData=PAD|0x01000000;
 		init_map();
-		draw_frog(frogx,frogy);
-
         for(i=0;i<6;i++){
             for(j=0;j<8;j++){
                 draw_car(carx[i][j],15+j*15);
+                if(i<5){
+                    if(j<5){
+                        draw_logs(logx[i][j],150+j*15);
+                        }
+                }
             }
         }
-
+        draw_frog(frogx,frogy);
 		//Checks Colition
         for(i=0;i<6;i++){
             for(j=0;j<8;j++){
@@ -282,6 +305,22 @@ int main()
                     if(frogx==carx[i][j]){
                         frogy =0;
                         frogx =0;
+                    }
+                }
+            }
+        }
+        //Checks if frog in poodle
+         if(frogy >9){
+            for(i=0;i<5;i++){
+                for(j=0;j<5;j++){
+                    if(frogy==j+10){
+                        if(frogx==logx[i][j] || frogx==logx[i][j]+1 || frogx==logx[i][j]+2){
+                                frogx= frogx -1;
+                        }
+                        else{
+                            frogx =0;
+                            frogy =0;
+                            }
                     }
                 }
             }
@@ -302,6 +341,16 @@ int main()
         //}
         for(i=0;i<6;i++){
             for(j=0;j<9;j=j+2){
+                if(i<5){
+                    if(j<5){
+                        if(logx[i][j]==0){
+                            logx[i][j]=26;
+                        }
+                        else{
+                        logx[i][j]=logx[i][j]-1;
+                        }
+                    }
+                }
                 if(carx[i][j]==0){
                     carx[i][j] =26;
                 }
@@ -312,6 +361,16 @@ int main()
         }
         for(i=0;i<6;i++){
             for(j=1;j<9;j=j+2){
+                if(i<5){
+                    if(j<5){
+                        if(logx[i][j]==26){
+                            logx[i][j]=0;
+                        }
+                        else{
+                        logx[i][j]=logx[i][j]+1;
+                        }
+                    }
+                }
                 if(carx[i][j]==26){
                     carx[i][j]=0;
                     }
