@@ -2,4 +2,4 @@
 *.cia
 *.bin
 *.elf
-
+*.o
