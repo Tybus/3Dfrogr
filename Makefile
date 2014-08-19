@@ -35,9 +35,8 @@ $(PROJECTNAME).elf: $(OFILES)
 
 clean:
 	@rm -f build/*.o build/*.d
-	@rm -f $(PROJECTNAME).elf $(PROJECTNAME).bin
+	@rm -f $(PROJECTNAME).elf $(PROJECTNAME).bin $(PROJECTNAME).3ds $(PROJECTNAME).cia
 	@echo "all cleaned up !"
-
 -include $(DFILES)
 
 build/%.o: source/%.c
